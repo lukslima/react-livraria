@@ -11,12 +11,13 @@ class App extends Component {
     this.setNome = this.setNome.bind(this);
     this.setEmail = this.setEmail.bind(this);
     this.setSenha = this.setSenha.bind(this);
+    this.enviaForm = this.enviaForm.bind(this);
   }
 
   componentDidMount() {
     console.log("didMount");
     $.ajax({
-      url:"https://cdc-react.herokuapp.com/api/autores",
+      url:"http://localhost:9091/api/autores",
       dataType: 'json',
       success: function(resposta){
         console.log("chegou a resposta");
@@ -40,6 +41,21 @@ class App extends Component {
   enviaForm(evento) {
     evento.preventDefault();
     console.log("Enviando formulário...");
+    $.ajax({
+      url:"http://localhost:9091/api/autores",
+      type:"post",
+      dataType:"json",
+      contentType:"application/json",
+      data: JSON.stringify({nome: this.state.nome, email: this.state.email, senha: this.state.senha}),
+      success: function(resposta) {
+        console.log("Resposta Sucesso!");
+        console.log(resposta);
+      },
+      error: function(resposta) {
+        console.log("Deu error");
+        console.log(resposta);
+      }
+    });
   }
 
   render() {
