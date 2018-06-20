@@ -36,8 +36,9 @@ export class FormularioAutor extends Component {
             dataType:"json",
             contentType:"application/json",
             data: JSON.stringify({nome: this.state.nome, email: this.state.email, senha: this.state.senha}),
-            success: function(resposta) {
-                this.props.callbackAtualizaListagem(resposta);
+            success: function(novaListagem) {
+                PubSub.publish('atualiza-lista-autores', novaListagem);
+                this.setState({nome: '', email: '', senha: ''});
             }.bind(this),
             error: function(resposta) {
                 console.log("Deu error");
@@ -106,28 +107,27 @@ export default class AutorBox extends Component {
     constructor() {
         super();
         this.state = {lista : []};
-        this.atualizaListagem = this.atualizaListagem.bind(this);
-    }
-
-    atualizaListagem(novaLista) {
-        this.setState({lista: novaLista});
     }
 
     componentDidMount() {
-        console.log("didMount");
         $.ajax({
-        url:"http://localhost:9091/api/autores",
-        dataType: 'json',
-        success: function(resposta){
-            this.setState({lista : resposta});
-        }.bind(this)
+            url:"http://localhost:9091/api/autores",
+            dataType: 'json',
+            success: function(resposta){
+                this.setState({lista : resposta});
+            }.bind(this)
         });
+
+        PubSub.subscribe('atualiza-lista-autores', function(topico, novaListagem) {
+            console.log("recupera lista publicada...")
+            this.setState({lista: novaListagem});
+        }.bind(this));
     }
 
     render() {
         return(
             <div>
-                <FormularioAutor callbackAtualizaListagem={this.atualizaListagem}/>
+                <FormularioAutor />
                 <TabelaAutores lista={this.state.lista}/>
             </div>
         );
