@@ -41,8 +41,9 @@ export class FormularioAutor extends Component {
                 this.setState({nome: '', email: '', senha: ''});
             }.bind(this),
             error: function(resposta) {
-                console.log("Deu error");
-                new TratadorErros().publicaErrors(resposta.responseJSON);
+                if(resposta.status === 400) {
+                    new TratadorErros().publicaErrors(resposta.responseJSON);
+                }
             },
             beforeSend: function() {
                 PubSub.publish('limpa-erros', {})
