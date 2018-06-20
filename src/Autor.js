@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import InputCustomizado from './componentes/InputCustomizado';
 import PubSub from 'pubsub-js';
-// import TratadorErros from './TratadorErros';
+import TratadorErros from './TratadorErros';
 
 export class FormularioAutor extends Component {
 
@@ -42,7 +42,10 @@ export class FormularioAutor extends Component {
             }.bind(this),
             error: function(resposta) {
                 console.log("Deu error");
-                console.log(resposta);
+                new TratadorErros().publicaErrors(resposta.responseJSON);
+            },
+            beforeSend: function() {
+                PubSub.publish('limpa-erros', {})
             }
         });
     }

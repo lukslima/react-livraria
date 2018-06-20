@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import './css/pure-min.css';
 import './css/side-menu.css';
-import $ from 'jquery';
 import BoxAutor from './Autor';
 
 
 class App extends Component {
-
-  constructor() {
-    super();
-  }
 
   render() {
     return(
