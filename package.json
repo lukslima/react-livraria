@@ -7,7 +7,9 @@
     "pubsub-js": "^1.5.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-router": "^3.2.0",
+    "react-scripts": "1.1.4",
+    "set-default-browser": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
